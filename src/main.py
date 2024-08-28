@@ -77,6 +77,11 @@ def read_graph():
 	if not args.directed:
 		G = G.to_undirected()
 
+	# Because the graph may have nodes not in the connected component
+	# we wish to capture that using the complement of the range of the maximum node ID.
+	singleton_nodes = set(range(max(G.nodes())+1)).difference(G.nodes())
+	G.add_nodes_from(singleton_nodes)
+
 	return G
 
 def learn_embeddings(walks):
